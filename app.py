@@ -96,10 +96,10 @@ def my_async_background_task():
 
     # # # ******************************************************************************************************
     # Use cases
-    data = {
-    'msisdn': '5511982420608', 'to': '5511950110187', 'messageId': '16000002C9BF8495',
-    'text': 'Test today', 'type': 'text', 'keyword': 'TEST', 'api-key': '4f03c64b', 'message-timestamp': '2020-09-28 21:20:21'
-    }
+    # data = {
+    # 'msisdn': '5511982420608', 'to': '5511950110187', 'messageId': '16000002C9BF8495',
+    # 'text': 'Test today', 'type': 'text', 'keyword': 'TEST', 'api-key': '4f03c64b', 'message-timestamp': '2020-09-28 21:20:21'
+    # }
 
     sender_mobile = data['msisdn']
     destination_mobile = data['to']
@@ -115,18 +115,18 @@ def my_async_background_task():
     # print(message_body)
     # print(timestamp)
 
-    # # # ******************************************************************************************************
-    # # Automatically replying to the message
-    # client = nexmo.Client(key='4f03c64b', secret='IEic08RSYc21NwMb')
-    # # Send message
-    # client.send_message({
-    #     'from': 'Digital T Company',
-    #     'to': sender_mobile,
-    #     'text': f'Hello customer- {sender_mobile}, you have been added to the list...stay tuned for further instructions.. Thank you.'
-    # })
+    # # ******************************************************************************************************
+    # Automatically replying to the message
+    client = nexmo.Client(key='4f03c64b', secret='IEic08RSYc21NwMb')
+    # Send message
+    client.send_message({
+        'from': 'Digital T Company',
+        'to': sender_mobile,
+        'text': f'Hello customer- {sender_mobile}, you have been added to the list...stay tuned for further instructions.. Thank you.'
+    })
 
-    # # Confirmation for message sent.
-    # print('Message sent successfully!!')
+    # Confirmation for message sent.
+    print('Message sent successfully!!')
 
 
     # # # ******************************************************************************************************
