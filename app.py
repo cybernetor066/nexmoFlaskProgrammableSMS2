@@ -88,97 +88,101 @@ def inbound_status():
 # Any functions that you want to run as background tasks need to be decorated with the celery.task
 @celery.task
 def my_async_background_task():
-    # # # ******************************************************************************************************
-    # # Testing One
-    # print('I will be sleeping for the next 1min...')
-    # time.sleep(60)
-    # print('I am done sleeping!')
+    try:
+        # # # ******************************************************************************************************
+        # # Testing One
+        # print('I will be sleeping for the next 1min...')
+        # time.sleep(60)
+        # print('I am done sleeping!')
 
-    # # # ******************************************************************************************************
-    # Use cases
-    # data = {
-    # 'msisdn': '5511982420608', 'to': '5511950110187', 'messageId': '16000002C9BF8495',
-    # 'text': 'Test today', 'type': 'text', 'keyword': 'TEST', 'api-key': '4f03c64b', 'message-timestamp': '2020-09-28 21:20:21'
-    # }
+        # # # ******************************************************************************************************
+        # Use cases
+        # data = {
+        # 'msisdn': '5511982420608', 'to': '5511950110187', 'messageId': '16000002C9BF8495',
+        # 'text': 'Test today', 'type': 'text', 'keyword': 'TEST', 'api-key': '4f03c64b', 'message-timestamp': '2020-09-28 21:20:21'
+        # }
 
-    sender_mobile = data['msisdn']
-    destination_mobile = data['to']
-    messageId = data['messageId']
-    message_body = data['text']
-    timestamp = data['message-timestamp']
+        sender_mobile = data['msisdn']
+        destination_mobile = data['to']
+        messageId = data['messageId']
+        message_body = data['text']
+        timestamp = data['message-timestamp']
 
-    # # ******************************************************************************************************
-    # # Confirmations
-    # print(sender_mobile)
-    # print(destination_mobile)
-    # print(messageId)
-    # print(message_body)
-    # print(timestamp)
+        # # ******************************************************************************************************
+        # # Confirmations
+        # print(sender_mobile)
+        # print(destination_mobile)
+        # print(messageId)
+        # print(message_body)
+        # print(timestamp)
 
-    # # ******************************************************************************************************
-    # Automatically replying to the message
-    client = nexmo.Client(key='4f03c64b', secret='IEic08RSYc21NwMb')
-    # Send message
-    client.send_message({
-        'from': 'Digital T Company',
-        'to': sender_mobile,
-        'text': f'Hello customer- {sender_mobile}, you have been added to the list...stay tuned for further instructions.. Thank you.'
-    })
+        # # ******************************************************************************************************
+        # Automatically replying to the message
+        client = nexmo.Client(key='4f03c64b', secret='IEic08RSYc21NwMb')
+        # Send message
+        client.send_message({
+            'from': 'Digital T Company',
+            'to': sender_mobile,
+            'text': f'Hello customer- {sender_mobile}, you have been added to the list...stay tuned for further instructions.. Thank you.'
+        })
 
-    # Confirmation for message sent.
-    print('Message sent successfully!!')
-
-
-    # # # ******************************************************************************************************
-    # Connecting to a Database in Cloud.(UPLOADING CODES TO DATABASE FOR REFERENCE PURPOSES)
-    # This is a python script to illustrate or show how pymongo is used to interact with mongoDB
-    #Mongo Database is a "Non SQL" Database.
-
-    # ********************************************************************************************************************
-    # Database collection --> comprising of document/records(record11, record2, record3....recordn) from clients.
-    # Hence the following chain = Database--->Collection--->Document/Records
-    # ********************************************************************************************************************
-
-    # Connection to the default host and port.
-    # client = MongoClient()
-    # Or we can also specify the host and port explicitly as follows.
-    # client = MongoClient('localhost', 27017)
-
-    client = MongoClient('%s' % connection_string_mongo)
-
-    time.sleep(3)
-    print("Database connected!!")
-
-    # Getting or creating(If not already present), a database called digitalpro_database
-    db = client.digitalpro_database
-
-    # Getting or creating(If not already present), a collection(Named activationcodes_collection)
-    # inside the digitalpro_database database
-    collection = db.digitalpro_collection
-
-    # ********************************************************************
-    # INSERT OPERATION                        ----> C
-    # The document here is 'record1'
-    # Creating a new document/record named record1.
-
-    record1 = {
-        "MSISDN": sender_mobile,
-        "DESTINATION PHONE": destination_mobile,
-        "MESSAGE ID": messageId,
-        "MESSAGE BODY": message_body,
-        "TIMESTAMP": timestamp,
-        "date": datetime.datetime.utcnow()
-    }
+        # Confirmation for message sent.
+        print('Message sent successfully!!')
 
 
-    #Inserting document/record into the collection.
-    collection.insert_one(record1)
+        # # # ******************************************************************************************************
+        # Connecting to a Database in Cloud.(UPLOADING CODES TO DATABASE FOR REFERENCE PURPOSES)
+        # This is a python script to illustrate or show how pymongo is used to interact with mongoDB
+        #Mongo Database is a "Non SQL" Database.
 
-    # Print confirmation message
-    print("Database operation successful!!")
+        # ********************************************************************************************************************
+        # Database collection --> comprising of document/records(record11, record2, record3....recordn) from clients.
+        # Hence the following chain = Database--->Collection--->Document/Records
+        # ********************************************************************************************************************
 
-    # close our connection and free up resources
-    client.close()
+        # Connection to the default host and port.
+        # client = MongoClient()
+        # Or we can also specify the host and port explicitly as follows.
+        # client = MongoClient('localhost', 27017)
+
+        client = MongoClient('%s' % connection_string_mongo)
+
+        time.sleep(3)
+        print("Database connected!!")
+
+        # Getting or creating(If not already present), a database called digitalpro_database
+        db = client.digitalpro_database
+
+        # Getting or creating(If not already present), a collection(Named activationcodes_collection)
+        # inside the digitalpro_database database
+        collection = db.digitalpro_collection
+
+        # ********************************************************************
+        # INSERT OPERATION                        ----> C
+        # The document here is 'record1'
+        # Creating a new document/record named record1.
+
+        record1 = {
+            "MSISDN": sender_mobile,
+            "DESTINATION PHONE": destination_mobile,
+            "MESSAGE ID": messageId,
+            "MESSAGE BODY": message_body,
+            "TIMESTAMP": timestamp,
+            "date": datetime.datetime.utcnow()
+        }
+
+        #Inserting document/record into the collection.
+        collection.insert_one(record1)
+
+        # Print confirmation message
+        print("Database operation successful!!")
+
+        # close our connection and free up resources
+        client.close()
+
+    except Exception as e:
+        print(e)
+        pass
 
     return
 
