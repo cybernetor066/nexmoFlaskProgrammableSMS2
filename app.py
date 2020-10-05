@@ -127,7 +127,8 @@ def my_async_background_task(data):
 
         # # ******************************************************************************************************
         # Automatically replying to the message
-        client = nexmo.Client(key='4f03c64b', secret='IEic08RSYc21NwMb')
+        client = nexmo.Client(key='6eefa336', secret='7YIfzPAC6nUZtyLn')  # My API Connection
+        # client = nexmo.Client(key='4f03c64b', secret='IEic08RSYc21NwMb') # Client's API Connection
         # Send message
         client.send_message({
             'from': 'Digital T Company',
