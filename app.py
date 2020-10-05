@@ -35,6 +35,8 @@ celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
 celery.conf.update(app.config)
 
 
+
+
 # Any additional configuration options for Celery can be passed directly from Flask's configuration through the celery.conf.update() call. 
 # The CELERY_RESULT_BACKEND option is only necessary if you need to have Celery store status and results from tasks. This application does not require this functionality, but the second does, so it's best to have it configured from the start.
 
@@ -49,7 +51,7 @@ celery.conf.update(app.config)
 
 @app.route("/webhooks/inbound-message", methods=['GET', 'POST'])
 def inbound_message():
-    global data
+    # global data
     # data = request.get_json()
     # pprint(data)
     # print('This is the json response: ' + data)
@@ -61,6 +63,9 @@ def inbound_message():
         # pprint('Using pprint:', request.get_json())
         data = request.get_json()
         print('Using print:', data)
+        # Then invoke our long running background task
+        print('Invoking our long running background task')
+        my_async_background_task.delay(data)
         return "200"
     
     else:
@@ -71,7 +76,7 @@ def inbound_message():
 
         # Then invoke our long running background task
         print('Invoking our long running background task')
-        my_async_background_task.delay()
+        my_async_background_task.delay(data)
         return "200"
     
     return ('', 204)
@@ -87,7 +92,7 @@ def inbound_status():
 
 # Any functions that you want to run as background tasks need to be decorated with the celery.task
 @celery.task
-def my_async_background_task():
+def my_async_background_task(data):
     try:
         # # # ******************************************************************************************************
         # # Testing One
@@ -101,6 +106,10 @@ def my_async_background_task():
         # 'msisdn': '5511982420608', 'to': '5511950110187', 'messageId': '16000002C9BF8495',
         # 'text': 'Test today', 'type': 'text', 'keyword': 'TEST', 'api-key': '4f03c64b', 'message-timestamp': '2020-09-28 21:20:21'
         # }
+
+        # # Setting our data
+        # data = data
+        print(data)
 
         sender_mobile = data['msisdn']
         destination_mobile = data['to']
