@@ -20,10 +20,15 @@ else:
     # running normally
     base_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Getting our connection strings, both for mongo and redis
+# Getting our connection strings, both for mongo and redis and other enviroment variables
 load_dotenv()
+
 connection_string_mongo = os.environ['MY_CONNECTION_STRING_MONGO']
 connection_string_redis = os.environ['MY_CONNECTION_STRING_REDIS']
+
+nexmo_api_key = os.environ['NEXMO_API_KEY']
+nexmo_api_secret = os.environ['NEXMO_API_SECRET']
+
 
 
 app = Flask(__name__)
@@ -127,13 +132,13 @@ def my_async_background_task(data):
 
         # # ******************************************************************************************************
         # Automatically replying to the message
-        client = nexmo.Client(key='6eefa336', secret='7YIfzPAC6nUZtyLn')  # My API Connection
-        # client = nexmo.Client(key='4f03c64b', secret='IEic08RSYc21NwMb') # Client's API Connection
+        client = nexmo.Client(key='%s' % nexmo_api_key, secret='%s' % nexmo_api_secret)  # API Connections credentials
         # Send message
         client.send_message({
             'from': 'Digital T Company',
             'to': sender_mobile,
-            'text': f'Hello customer- {sender_mobile}, you have been added to the list...stay tuned for further instructions.. Thank you.'
+            'text': 'Obrigado, seu cadastro foi realizado com sucesso em nossa lista VIP.'
+            # 'text': f'Hello customer- {sender_mobile}, you have been added to the list...stay tuned for further instructions.. Thank you.'
         })
 
         # Confirmation for message sent.
