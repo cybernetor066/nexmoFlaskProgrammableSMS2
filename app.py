@@ -72,8 +72,6 @@ def inbound_message():
 
 
 
-
-
 # Any functions that you want to run as background tasks need to be decorated with the celery.task
 @celery.task
 def our_celery_task():
@@ -137,9 +135,8 @@ def our_celery_task():
         print('\n')
         print("All data loaded from googlesheet successfully!...please wait..")
         print("The other parts of the automation process should begin any moment from now..")
-        client = nexmo.Client(key='%s' % nexmo_api_key, secret='%s' % nexmo_api_secret)  # API Connections credentials
+        client = nexmo.Sms(key='%s' % nexmo_api_key, secret='%s' % nexmo_api_secret)  # API Connections credentials
 
-        message_send_count = 1
         for client_name, client_dob, client_phone_no in zip(client_name_list, client_dob_list, client_phone_no_list):
             try:
                 print(f"Client's name is: {client_name}, date of birth is: {client_dob} and phone number is: {client_phone_no}")
@@ -149,13 +146,14 @@ def our_celery_task():
                 # Automatically replying to the message
                 # Send message
                 client.send_message({
-                    'from': 'Athena Health Company',
-                    'to': client_phone_no,
+                    'from': 'Vonage APIs',
+                    'to': str(client_phone_no),
                     'text': f'Hello {client_name}!, your personal data are -- name: {client_name}, date of birth: {client_dob} and phone number: {client_phone_no}. You are receiving this sms as an automated message to verify your personal details, thank you.'
+                    # 'text': f'Hello {client_name}!, this is a test msg!'
                 })
 
                 # Confirmation for message sent.
-                print(f'Message {message_send_count} sent successfully!!')
+                print(f'Message sent successfully!!')
 
 
                 # # # # ******************************************************************************************************
@@ -211,15 +209,14 @@ def our_celery_task():
             except:
                 pass
 
-            finally:
-                # Increment message receipt count
-                message_send_count += 1
 
     except Exception as e:
         print(e)
         pass
 
     finally:
+        print('Operation carried out successfully!!!')
+
         # Reset all data list
         client_name_list = []
         client_dob_list = []
@@ -236,7 +233,7 @@ def our_celery_task():
 celery.conf.beat_schedule = {
     "first-celery-task": {
         "task": "app.our_celery_task",
-        "schedule": crontab(minute="*/3")   # configured to run at every 3mins
+        "schedule": crontab(minute="*/1")   # configured to run at every 3mins
     }
 }
 
