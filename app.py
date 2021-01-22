@@ -138,6 +138,8 @@ def our_celery_task():
         client = nexmo.Sms(key='%s' % nexmo_api_key, secret='%s' % nexmo_api_secret)  # API Connections credentials
 
         for client_name, client_dob, client_phone_no in zip(client_name_list, client_dob_list, client_phone_no_list):
+            # sleep time in between nexmo api calls to avoid ban
+            time.sleep(30)
             try:
                 print(f"Client's name is: {client_name}, date of birth is: {client_dob} and phone number is: {client_phone_no}")
                 # # # ****************************************************************************************************
