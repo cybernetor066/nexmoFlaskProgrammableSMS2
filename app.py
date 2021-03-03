@@ -148,10 +148,11 @@ def our_celery_task():
                 # Automatically replying to the message
                 # Send message
                 client.send_message({
-                    'from': 'Vonage APIs',
+                    # 'from': 'Vonage APIs',
+                    'from': '18334572452',
                     'to': str(client_phone_no),
-                    'text': f'Hello {client_name}!, your personal data are -- name: {client_name}, date of birth: {client_dob} and phone number: {client_phone_no}. You are receiving this sms as an automated message to verify your personal details, thank you.'
-                    # 'text': f'Hello {client_name}!, this is a test msg!'
+                    # 'text': f'Hello!, your personal data are -- name: {client_name}, date of birth: {client_dob} and phone number: {client_phone_no}. This is a test sms from Cybernetor Technologies(Anetor Eguakhide Kunle) From Fiverr, on your current project',
+                    'text': f'Hello!, your personal data are -- name: {client_name}, date of birth: {client_dob} and phone number: {client_phone_no}. (From Fiverr Project)',
                 })
 
                 # Confirmation for message sent.
@@ -235,7 +236,7 @@ def our_celery_task():
 celery.conf.beat_schedule = {
     "first-celery-task": {
         "task": "app.our_celery_task",
-        "schedule": crontab(minute="*/1")   # configured to run at every 3mins
+        "schedule": crontab(minute="*/6")   # configured to run at every 3mins
     }
 }
 
